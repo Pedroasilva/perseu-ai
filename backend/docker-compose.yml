@@ -1,6 +1,6 @@
 services:
   web:
-    image: app-name:latest
+    image: php:8.3-apache
     build:
       target: web
       context: .
@@ -10,17 +10,19 @@ services:
       - "8000:80"
     depends_on:
       - db
+    volumes:
+      - .:/var/www/html
 
   db:
-    platform: "linux/amd64"
-    image: mysql:5.7
+    image: mariadb
     env_file:
       - .env
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USERNAME}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      - TZ=America/Sao_Paulo
+      - MARIADB_ROOT_PASSWORD=root
+      - MARIADB_USER=${DB_USERNAME}
+      - MARIADB_PASSWORD=${DB_PASSWORD}
+      - MARIADB_DATABASE=${DB_DATABASE}
     ports:
       - "3306:3306"
     volumes:
@@ -28,3 +30,4 @@ services:
 
 volumes:
   dbdata:
+

@@ -1,5 +1,5 @@
 # Use PHP with Apache as the base image
-FROM php:8.2-apache as web
+FROM php:8.3-apache as web
 
 # Install Additional System Dependencies
 RUN apt-get update && apt-get install -y \
@@ -36,3 +36,17 @@ RUN composer install
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
+# Generate application key
+RUN php artisan key:generate
+
+# Clear cached views
+RUN php artisan view:clear
+
+# Clear cached config
+RUN php artisan config:clear
+
+# Clear cached routes
+RUN php artisan route:clear
+
+# Install Laravel Tinker
+RUN composer require laravel/tinker
