@@ -72,4 +72,4 @@ Após seguir esses passos, a aplicação estará pronta e acessível.
 
 ## Licença
 
-Distribuído sob a licença MIT. Consulte o arquivo `LICENSE` para mais informações.
+Distribuído sob a licença GNU. Consulte o arquivo `LICENSE` para mais informações.
