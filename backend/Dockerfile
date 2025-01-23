@@ -39,14 +39,13 @@ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cac
 # Generate application key
 RUN php artisan key:generate
 
-# Clear cached views
-RUN php artisan view:clear
+# Give write permissions to the storage and bootstrap/cache directories
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
-# Clear cached config
-RUN php artisan config:clear
+# Give full permissions to the storage directory
+RUN chmod 777 storage/ -R
 
-# Clear cached routes
-RUN php artisan route:clear
-
-# Install Laravel Tinker
-RUN composer require laravel/tinker
+RUN php artisan config:clear \
+    && php artisan route:clear \
+    && php artisan view:clear
