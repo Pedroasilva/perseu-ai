@@ -73,6 +73,3 @@ Após seguir esses passos, a aplicação estará pronta e acessível.
 ## Licença
 
 Distribuído sob a licença MIT. Consulte o arquivo `LICENSE` para mais informações.
-```
-
-Se precisar de mais ajustes ou tiver outras informações para incluir, é só avisar!
