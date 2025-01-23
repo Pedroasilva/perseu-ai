@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      target: web
+    env_file:
+      - ./backend/.env
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+  db:
+    platform: "linux/amd64"
+    image: mysql:5.7
+    env_file:
+      - ./backend/.env
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+  whatsapp-api:
+    container_name: whatsapp_web_api
+    image: chrishubert/whatsapp-web-api:latest
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - BASE_WEBHOOK_URL=http://localhost:3000/localCallbackExample
+      - ENABLE_LOCAL_CALLBACK_EXAMPLE=TRUE
+      - MAX_ATTACHMENT_SIZE=5000000
+      - SET_MESSAGES_AS_SEEN=TRUE
+      - DISABLED_CALLBACKS=message_ack|message_reaction
+      - ENABLE_SWAGGER_ENDPOINT=TRUE
+    volumes:
+      - ./whatsapp-api/sessions:/usr/src/app/sessions
+    networks:
+      - app-network
+
+volumes:
+  dbdata:
+
+networks:
+  app-network:
+    driver: bridge
