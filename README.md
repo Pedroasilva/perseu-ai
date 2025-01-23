@@ -24,7 +24,7 @@ To get a local copy up and running, follow these simple steps.
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/perseu-ai.git
+   git clone https://github.com/Pedroasilva/perseu-ai.git
    ```
 
 2. Navigate to the project directory:
