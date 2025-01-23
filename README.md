@@ -1,57 +1,78 @@
 # Perseu AI - Virtual Assistant for Daily Tasks
 
-**Perseu AI** is an intelligent virtual assistant designed to streamline and assist with everyday tasks. Built with modern AI technologies, it aims to improve productivity by offering smart solutions for managing daily activities, automating repetitive processes, and providing quick access to essential information. Whether it's managing appointments, answering questions, or helping with basic automation, Perseu AI is the go-to tool for anyone looking to simplify their day-to-day operations.
+**Perseu AI** é um assistente virtual inteligente projetado para otimizar e simplificar tarefas do dia a dia. Desenvolvido com tecnologias modernas de IA, ele visa melhorar a produtividade ao oferecer soluções inteligentes para o gerenciamento de atividades diárias, automação de processos repetitivos e acesso rápido a informações essenciais. Seja para gerenciar compromissos, responder perguntas ou ajudar com automações básicas, o Perseu AI é a ferramenta ideal para quem busca praticidade nas operações diárias.
 
-## Features
+## Funcionalidades
 
-- Task automation and management
-- Intelligent reminders and notifications
-- Personalized recommendations
-- Natural language processing (NLP) for better interaction
-- Integration with other tools and services
+- Automação e gerenciamento de tarefas
+- Lembretes inteligentes e notificações
+- Recomendações personalizadas
+- Processamento de linguagem natural (NLP) para melhor interação
+- Integração com outras ferramentas e serviços
 
-## Technologies Used
+## Tecnologias Utilizadas
 
-- Artificial Intelligence (AI)
-- Natural Language Processing (NLP)
-- Cloud Integration
+- Inteligência Artificial (IA)
+- Processamento de Linguagem Natural (NLP)
+- Integração com a Nuvem
 
-## Getting Started
+## Configuração do Ambiente Local
 
-To get a local copy up and running, follow these simple steps.
+Siga os passos abaixo para configurar o projeto localmente.
 
-### Installation
+### Instalação
 
-1. Clone the repository:
+1. Clone o repositório:
    ```bash
    git clone https://github.com/Pedroasilva/perseu-ai.git
    ```
 
-2. Navigate to the project directory:
+2. Navegue até o diretório do projeto:
    ```bash
    cd perseu-ai
    ```
 
-3. Build the Docker containers:
-   ```bash
-   docker-compose build
-   ```
+3. Configure os serviços backend:
+- Navegue até a pasta `backend`:
+  ```bash
+  cd backend
+  ```
+- Construa os containers:
+  ```bash
+  docker-compose build
+  ```
+- Inicie os serviços:
+  ```bash
+  docker-compose up -d
+     ```
 
-4. Start the project using Docker Compose:
-   ```bash
-   docker compose up
-   ```
+4. Configure a API do WhatsApp:
+- Navegue até a pasta `whatsapp-api`:
+  ```bash
+  cd ../whatsapp-api
+  ```
+- Construa os containers:
+  ```bash
+  docker-compose build
+  ```
+- Inicie os serviços:
+  ```bash
+  docker-compose up -d
+     ```
 
-The application should now be running and accessible.
+Após seguir esses passos, a aplicação estará pronta e acessível.
 
-## Contributing
+## Contribuição
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature-name`)
-3. Commit your changes (`git commit -am 'Add new feature'`)
-4. Push to the branch (`git push origin feature-name`)
-5. Create a new Pull Request
+1. Faça um fork do repositório.
+2. Crie um branch para sua funcionalidade (`git checkout -b nome-da-funcionalidade`).
+3. Realize suas alterações e faça commits (`git commit -am 'Adiciona nova funcionalidade'`).
+4. Envie as alterações para o repositório remoto (`git push origin nome-da-funcionalidade`).
+5. Crie um Pull Request para revisão.
 
-## License
+## Licença
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Distribuído sob a licença MIT. Consulte o arquivo `LICENSE` para mais informações.
+```
+
+Se precisar de mais ajustes ou tiver outras informações para incluir, é só avisar!
