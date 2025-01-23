@@ -1,4 +1,3 @@
-```markdown
 # Perseu AI - Virtual Assistant for Daily Tasks
 
 **Perseu AI** is an intelligent virtual assistant designed to streamline and assist with everyday tasks. Built with modern AI technologies, it aims to improve productivity by offering smart solutions for managing daily activities, automating repetitive processes, and providing quick access to essential information. Whether it's managing appointments, answering questions, or helping with basic automation, Perseu AI is the go-to tool for anyone looking to simplify their day-to-day operations.
@@ -56,4 +55,3 @@ The application should now be running and accessible.
 ## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
-```
