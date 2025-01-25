@@ -13,4 +13,6 @@ Route::controller(EstanciaController::class)->prefix('/estancias')->group(functi
     Route::get('/edit/{id}', 'show')->name('estancias.edit');
     Route::post('/edit/{id?}', 'editCreate')->name('estancias.editCreate');
     Route::delete('/delete/{id}', 'delete')->name('estancias.delete');
+    Route::get('/vincular', 'vincular')->name('estancias.vincular');
+    Route::get('/desvincular', 'vincular')->name('estancias.desvincular');
 });

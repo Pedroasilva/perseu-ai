@@ -39,12 +39,20 @@
     </div>
     <div class="form-group">
         <label for="telefone">Telefone *</label>
-        <input type="text" name="telefone" id="telefone" class="form-control" value="{{ old('telefone', $estancia->telefone ?? '') }}">
+        <input type="text" name="telefone" id="telefone" class="form-control" value="{{ old('telefone', $estancia->telefone ?? '') }}" readonly>
     </div>
     <button type="submit" class="btn btn-success mt-4">
         <i class="fas fa-save"></i> Salvar
     </button>
 </form>
+
+@if(isset($qrCode))
+    <div class="text-center mt-4">
+        <h3>QR Code</h3>
+        <p>Escaneie o QR Code abaixo para vincular a estância</p>
+        <img src="{{ $qrCode }}" alt="QR Code">
+    </div>
+@endif
 
 @endsection
 
@@ -52,6 +60,17 @@
     <script>
         $(document).ready(function() {
             $('#telefone').mask('(00) 00000-0000');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var qrCodeElement = document.querySelector('img[alt="QR Code"]');
+            if (qrCodeElement) {
+                QRCode.toDataURL('{{$qrCode}}', function (err, url) {
+                    if (!err) {
+                        qrCodeElement.src = url;
+                    }
+                });
+            }
         });
     </script>
 @endsection

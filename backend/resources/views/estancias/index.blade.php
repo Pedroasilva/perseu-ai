@@ -16,6 +16,7 @@
                 <th>Telefone</th>
                 <th>Nome</th>
                 <th>Descrição</th>
+                <th>Status</th>
                 <th>Opções</th>
             </tr>
         </thead>
@@ -27,13 +28,24 @@
                     <td>{{ $estancia->nome }}</td>
                     <td>{{ $estancia->descricao }}</td>
                     <td>
-                        <a href="{{ route('estancias.edit', ['id' => $estancia->id]) }}" class="btn btn-primary">
-                            <i class="fas fa-edit"></i>
+                        @if (!$estancia->vinculado)
+                            <a href="{{ route('estancias.vincular', ['id' => $estancia->id]) }}" title="Whatsapp não vinculado, clique para vincular">
+                                <span class="badge text-bg-danger">WHATSAPP NÃO VINCULADO</span>
+                            </a>
+                        @else
+                            <a href="{{ route('estancias.desvincular', ['id' => $estancia->id]) }}" title="Whatsapp vinculado, clique para desvincular">
+                                <span class="badge text-bg-success">WHATSAPP VINCULADO</span>
+                            </a>
+                        @endif
+                    </td>
+                    <td>
+                        <a href="{{ route('estancias.edit', ['id' => $estancia->id]) }}" class="btn btn-primary" title="Ver">
+                            <i class="fas fa-eye"></i>
                         </a>
                         <form action="{{ route('estancias.delete', ['id' => $estancia->id]) }}" method="post" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-danger">
+                            <button type="submit" class="btn btn-danger" title="Deletar">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </form>

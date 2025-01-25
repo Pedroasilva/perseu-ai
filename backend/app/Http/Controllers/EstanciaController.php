@@ -2,68 +2,130 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\WhatsappApiEnum;
 use App\Http\Requests\StoreEstanciaPostRequest;
 use App\Models\Estancia;
 use App\Services\WhatsappApiService;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
 class EstanciaController extends Controller
 {
+    private WhatsappApiService $whatsAppApiService;
 
-    private $whastappApiService;
-
-    public function __construct(WhatsappApiService $whastappApiService)
+    public function __construct(WhatsappApiService $whatsAppApiService)
     {
-        $this->whastappApiService = $whastappApiService;
+        $this->whatsAppApiService = $whatsAppApiService;
     }
 
-    public function index()
+    /**
+     * Display a listing of the Estancias.
+     *
+     * @return View
+     */
+    public function index(): View
     {
-
-        $ping = $this->whastappApiService->ping();
-        dd($ping);
-
         $estancias = Estancia::all();
         return view('estancias.index', compact('estancias'));
     }
 
-    public function show()
+    /**
+     * Display a single Estancia or initiate a session if necessary.
+     *
+     * @return View
+     */
+    public function show(): View
     {
         $id = request()->route('id');
+        $estancia = Estancia::find($id);
 
-        if (!$id) {
+        if (!$estancia) {
             return view('estancias.item');
         }
 
-        $estancia = Estancia::find($id);
-        return view('estancias.item', compact('estancia'));
+        $status = $this->whatsAppApiService->checkSession($estancia->telefone);
+
+        if ($status['success']) {
+            $estancia->update(['vinculado' => true]);
+        }
+
+        $qrCode = $this->handleQrCode($status, $estancia->telefone);
+
+        return view('estancias.item', compact('estancia', 'qrCode'));
     }
 
-    public function editCreate(StoreEstanciaPostRequest $request)
+    /**
+     * Handle QR code generation based on session status.
+     *
+     * @param array $status
+     * @param string $telefone
+     * @return string|null
+     */
+    private function handleQrCode(array $status, string $telefone): ?string
+    {
+        if (in_array($status['message'], [
+            WhatsappApiEnum::SESSAO_NAO_ENCONTRADA->value,
+            WhatsappApiEnum::SESSAO_NAO_CONECTADA->value
+        ])) {
+            if ($status['message'] == WhatsappApiEnum::SESSAO_NAO_ENCONTRADA->value) {
+                $this->whatsAppApiService->startSession($telefone);
+            }
+
+            return $this->whatsAppApiService->getQrCode($telefone)['qr'];
+        }
+
+        return null;
+    }
+
+    /**
+     * Create or update an Estancia.
+     *
+     * @param StoreEstanciaPostRequest $request
+     * @return RedirectResponse
+     */
+    public function editCreate(StoreEstanciaPostRequest $request): RedirectResponse
     {
         $id = request()->route('id');
+        $data = $request->validated();
 
         if ($id) {
-            $estancia = Estancia::find($id);
-            $estancia->update($request->all());
+            $estancia = Estancia::findOrFail($id);
+            $estancia->update($data);
         } else {
-            $estancia = Estancia::onlyTrashed()->where('telefone', $request->telefone)->first();
-            if ($estancia) {
-                $estancia->restore();
-            } else {
-                $estancia = Estancia::create($request->all());
-            }
+            $this->createOrUpdateEstancia($data);
         }
 
         return redirect()->route('estancias.index');
     }
 
-    public function delete()
+    /**
+     * Create or update an Estancia based on the provided data.
+     *
+     * @param array $data
+     * @return void
+     */
+    private function createOrUpdateEstancia(array $data): void
+    {
+        $estancia = Estancia::onlyTrashed()->where('telefone', $data['telefone'])->first();
+
+        if ($estancia) {
+            $estancia->restore();
+        } else {
+            Estancia::create($data);
+        }
+    }
+
+    /**
+     * Delete an Estancia.
+     *
+     * @return RedirectResponse
+     */
+    public function delete(): RedirectResponse
     {
         $id = request()->route('id');
-        $estancia = Estancia::find($id);
+        $estancia = Estancia::findOrFail($id);
         $estancia->delete();
 
         return redirect()->route('estancias.index');
     }
-
 }

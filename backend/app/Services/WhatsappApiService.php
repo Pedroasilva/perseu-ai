@@ -19,4 +19,18 @@ class WhatsappApiService
         return $this->client->get('/ping');
     }
 
+    public function startSession($phone)
+    {
+        return $this->client->get('/session/start/'.$phone);
+    }
+
+    public function getQrCode($phone)
+    {
+        return $this->client->get('/session/qr/'.$phone);
+    }
+
+    public function checkSession($phone)
+    {
+        return $this->client->get('/session/status/'.$phone);
+    }
 }
