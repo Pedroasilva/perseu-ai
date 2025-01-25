@@ -2,13 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreEstanciaPostRequest;
 use App\Models\Estancia;
-use Illuminate\Http\Request;
+use App\Services\WhatsappApiService;
 
 class EstanciaController extends Controller
 {
+
+    private $whastappApiService;
+
+    public function __construct(WhatsappApiService $whastappApiService)
+    {
+        $this->whastappApiService = $whastappApiService;
+    }
+
     public function index()
     {
+
+        $ping = $this->whastappApiService->ping();
+        dd($ping);
+
         $estancias = Estancia::all();
         return view('estancias.index', compact('estancias'));
     }
@@ -25,7 +38,7 @@ class EstanciaController extends Controller
         return view('estancias.item', compact('estancia'));
     }
 
-    public function editCreate(Request $request)
+    public function editCreate(StoreEstanciaPostRequest $request)
     {
         $id = request()->route('id');
 
@@ -33,7 +46,12 @@ class EstanciaController extends Controller
             $estancia = Estancia::find($id);
             $estancia->update($request->all());
         } else {
-            $estancia = Estancia::create($request->all());
+            $estancia = Estancia::onlyTrashed()->where('telefone', $request->telefone)->first();
+            if ($estancia) {
+                $estancia->restore();
+            } else {
+                $estancia = Estancia::create($request->all());
+            }
         }
 
         return redirect()->route('estancias.index');

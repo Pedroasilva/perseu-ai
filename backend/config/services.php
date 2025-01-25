@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'whatsapp_api' => [
+        'base_url' => env('WHATSAPP_API_BASE_URL'),
+    ],
+
 ];

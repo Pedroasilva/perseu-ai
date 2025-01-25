@@ -12,18 +12,20 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th>ID Instância</th>
+                <th>Telefone</th>
                 <th>Nome</th>
                 <th>Descrição</th>
-                <th>Telefone</th>
                 <th>Opções</th>
             </tr>
         </thead>
         <tbody>
             @foreach ($estancias as $estancia)
                 <tr>
+                    <td>{{ str_pad($estancia->id, 4, '0', STR_PAD_LEFT) }}</td>
+                    <td>{{ preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1) $2-$3', $estancia->telefone) }}</td>
                     <td>{{ $estancia->nome }}</td>
                     <td>{{ $estancia->descricao }}</td>
-                    <td>{{ $estancia->telefone }}</td>
                     <td>
                         <a href="{{ route('estancias.edit', ['id' => $estancia->id]) }}" class="btn btn-primary">
                             <i class="fas fa-edit"></i>
