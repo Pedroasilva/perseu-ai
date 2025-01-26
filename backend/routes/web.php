@@ -15,4 +15,5 @@ Route::controller(EstanciaController::class)->prefix('/estancias')->group(functi
     Route::delete('/delete/{id}', 'delete')->name('estancias.delete');
     Route::get('/vincular', 'vincular')->name('estancias.vincular');
     Route::get('/desvincular', 'vincular')->name('estancias.desvincular');
+    Route::get('/qrcode/ver/{id}', 'showQrCode')->name('estancias.qrcode.ver');
 });

@@ -46,11 +46,26 @@
     </button>
 </form>
 
-@if(isset($qrCode))
-    <div class="text-center mt-4">
-        <h3>QR Code</h3>
-        <p>Escaneie o QR Code abaixo para vincular a estância</p>
-        <img src="{{ $qrCode }}" alt="QR Code">
+@if(!$estancia->vinculado)
+    <div class="mt-4">
+        <button id="verQrCodeBtn" class="btn btn-info" data-toggle="modal" data-target="#qrCodeModal">
+            <i class="fas fa-qrcode"></i> Ver QR Code
+        </button>
+
+        <div class="modal fade" id="qrCodeModal" tabindex="-1" role="dialog" aria-labelledby="qrCodeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                    <div id="qrCodeContainer" class="text-center">
+                        <h5 class="modal-title" id="qrCodeModalLabel">
+                            Escaneie o QR Code para vincular a estância ao whatsapp
+                        </h5>
+                        <img alt="QR Code" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
     </div>
 @endif
 
@@ -62,15 +77,44 @@
             $('#telefone').mask('(00) 00000-0000');
         });
 
-        document.addEventListener('DOMContentLoaded', function() {
-            var qrCodeElement = document.querySelector('img[alt="QR Code"]');
-            if (qrCodeElement) {
-                QRCode.toDataURL('{{$qrCode}}', function (err, url) {
+        var qrCodeInterval;
+
+        $('#verQrCodeBtn').on('click', function() {
+            loadQrCode();
+            qrCodeInterval = setInterval(loadQrCode, 10000);
+            $('#qrCodeModal').modal('show');
+        });
+
+        $('#qrCodeModal').on('hidden.bs.modal', function () {
+            clearInterval(qrCodeInterval);
+        });
+
+        function loadQrCode() {
+            $.ajax({
+            url: '{{ route('estancias.qrcode.ver', ['id' => $estancia->id ?? '']) }}',
+            method: 'GET',
+            success: function(response) {
+
+                if (response.connected) {
+                    window.location.href = '{{ route('estancias.index') }}';
+                    return;
+                }
+
+                var qrCodeElement = document.querySelector('img[alt="QR Code"]');
+                if (qrCodeElement) {
+                QRCode.toDataURL(response.qr, function (err, url) {
                     if (!err) {
-                        qrCodeElement.src = url;
+                    qrCodeElement.src = url;
                     }
                 });
+                }
+                $('#qrCodeContainer').show();
+            },
+            error: function() {
+                alert('Erro ao carregar o QR Code.');
             }
-        });
+            });
+        }
+
     </script>
 @endsection

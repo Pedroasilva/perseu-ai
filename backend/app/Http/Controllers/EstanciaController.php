@@ -46,35 +46,46 @@ class EstanciaController extends Controller
         $status = $this->whatsAppApiService->checkSession($estancia->telefone);
 
         if ($status['success']) {
-            $estancia->update(['vinculado' => true]);
+            $estancia->vinculado = true;
+            $estancia->save();
         }
 
-        $qrCode = $this->handleQrCode($status, $estancia->telefone);
+        $this->handleSession($status, $estancia->telefone);
 
-        return view('estancias.item', compact('estancia', 'qrCode'));
+        return view('estancias.item', compact('estancia'));
     }
 
     /**
-     * Handle QR code generation based on session status.
+     * Handle Session code generation based on session status.
      *
      * @param array $status
      * @param string $telefone
      * @return string|null
      */
-    private function handleQrCode(array $status, string $telefone): ?string
+    private function handleSession(array $status, string $telefone): ?string
     {
-        if (in_array($status['message'], [
-            WhatsappApiEnum::SESSAO_NAO_ENCONTRADA->value,
-            WhatsappApiEnum::SESSAO_NAO_CONECTADA->value
-        ])) {
-            if ($status['message'] == WhatsappApiEnum::SESSAO_NAO_ENCONTRADA->value) {
-                $this->whatsAppApiService->startSession($telefone);
-            }
-
-            return $this->whatsAppApiService->getQrCode($telefone)['qr'];
+        if ($status['message'] == WhatsappApiEnum::SESSAO_NAO_ENCONTRADA->value) {
+            $this->whatsAppApiService->startSession($telefone);
         }
 
         return null;
+    }
+
+    public function showQrCode(): ?array
+    {
+        $id = request()->route('id');
+        $estancia = Estancia::findOrFail($id);
+
+        $status = $this->whatsAppApiService->checkSession($estancia->telefone);
+
+        if ($status['message'] == WhatsappApiEnum::SESSAO_CONECTADA->value) {
+            $response = [
+                'connected' => true,
+            ];
+            return $response;
+        }
+
+        return $this->whatsAppApiService->getQrCode($estancia->telefone);
     }
 
     /**
@@ -99,7 +110,7 @@ class EstanciaController extends Controller
     }
 
     /**
-     * Create or update an Estancia based on the provided data.
+     * Create or update an Estancia showQrCodebased on the provided data.
      *
      * @param array $data
      * @return void
