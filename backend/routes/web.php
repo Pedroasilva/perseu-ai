@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\EstanciaController;
+use App\Http\Controllers\MensagemController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -16,4 +17,10 @@ Route::controller(EstanciaController::class)->prefix('/estancias')->group(functi
     Route::get('/vincular', 'vincular')->name('estancias.vincular');
     Route::get('/desvincular', 'vincular')->name('estancias.desvincular');
     Route::get('/qrcode/ver/{id}', 'showQrCode')->name('estancias.qrcode.ver');
+});
+
+
+Route::controller(MensagemController::class)->prefix('/mensagem')->group(function () {
+    Route::get('/', 'index')->name('mensagem.index');
+    Route::post('/enviar', 'enviar')->name('mensagem.enviar');
 });
