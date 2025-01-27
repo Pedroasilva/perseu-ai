@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ContatosController;
 use App\Http\Controllers\EstanciaController;
 use App\Http\Controllers\MensagemController;
 use Illuminate\Support\Facades\Route;
@@ -19,8 +20,11 @@ Route::controller(EstanciaController::class)->prefix('/estancias')->group(functi
     Route::get('/qrcode/ver/{id}', 'showQrCode')->name('estancias.qrcode.ver');
 });
 
-
 Route::controller(MensagemController::class)->prefix('/mensagem')->group(function () {
     Route::get('/', 'index')->name('mensagem.index');
-    Route::post('/enviar', 'enviar')->name('mensagem.enviar');
+    Route::post('/enviar', 'enviarMensagem')->name('mensagem.enviar');
+});
+
+Route::controller(ContatosController::class)->prefix('/contatos')->group(function () {
+    Route::get('/', 'index')->name('contatos.index');
 });

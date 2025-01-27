@@ -39,14 +39,14 @@
     </div>
     <div class="form-group">
         <label for="telefone">Telefone *</label>
-        <input type="text" name="telefone" id="telefone" class="form-control" value="{{ old('telefone', $estancia->telefone ?? '') }}" readonly>
+        <input type="text" name="telefone" id="telefone" class="form-control" value="{{ old('telefone', $estancia->telefone ?? '') }}" @if(isset($estancia->id)) readonly @endif>
     </div>
     <button type="submit" class="btn btn-success mt-4">
         <i class="fas fa-save"></i> Salvar
     </button>
 </form>
 
-@if(!$estancia->vinculado)
+@if(isset($estancia) && !$estancia->vinculado)
     <div class="mt-4">
         <button id="verQrCodeBtn" class="btn btn-info" data-toggle="modal" data-target="#qrCodeModal">
             <i class="fas fa-qrcode"></i> Ver QR Code
@@ -91,7 +91,7 @@
 
         function loadQrCode() {
             $.ajax({
-            url: '{{ route('estancias.qrcode.ver', ['id' => $estancia->id ?? '']) }}',
+            url: '{{ route('estancias.qrcode.ver', ['id' => $estancia->id ?? 0]) }}',
             method: 'GET',
             success: function(response) {
 

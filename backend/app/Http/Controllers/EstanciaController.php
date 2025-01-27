@@ -40,7 +40,7 @@ class EstanciaController extends Controller
         $estancia = Estancia::find($id);
 
         if (!$estancia) {
-            return view('estancias.item');
+            return view('estancias.item', compact('estancia'));
         }
 
         $status = $this->whatsAppApiService->checkSession($estancia->telefone);

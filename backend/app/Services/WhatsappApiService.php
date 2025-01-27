@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Mensagem;
 use App\Services\RestClient\RestClient;
 use App\Services\RestClient\RestClientInterface;
 
@@ -19,18 +20,29 @@ class WhatsappApiService
         return $this->client->get('/ping');
     }
 
-    public function startSession($phone)
+    public function startSession($sessionId)
     {
-        return $this->client->get('/session/start/'.$phone);
+        return $this->client->get('/session/start/'.$sessionId);
     }
 
-    public function getQrCode($phone)
+    public function getQrCode($sessionId)
     {
-        return $this->client->get('/session/qr/'.$phone);
+        return $this->client->get('/session/qr/'.$sessionId);
     }
 
-    public function checkSession($phone)
+    public function checkSession($sessionId)
     {
-        return $this->client->get('/session/status/'.$phone);
+        return $this->client->get('/session/status/'.$sessionId);
+    }
+
+    public function sendMessage($sessionId, $to, $message)
+    {
+        $to = substr_replace($to, '', 2, 1);
+
+        return $this->client->post('/client/sendMessage/'.$sessionId, [
+            'contentType' => 'string',
+            'chatId' => '55'.$to.'@c.us',
+            'content' => $message
+        ]);
     }
 }
