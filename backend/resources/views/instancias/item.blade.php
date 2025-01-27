@@ -3,15 +3,15 @@
 @section('content')
 
 <h2>
-    @if(isset($estancia->id))
+    @if(isset($instancia->id))
         Editar
     @else
         Criar
     @endif
-    Estância
+    Instância
 </h2>
 <p>
-    <a href="{{ route('estancias.index') }}" class="btn btn-primary">
+    <a href="{{ route('instancias.index') }}" class="btn btn-primary">
         <i class="fas fa-arrow-left"></i> Voltar
     </a>
 </p>
@@ -26,27 +26,27 @@
     </div>
 @endif
 
-<form action="{{ route('estancias.editCreate', ['id' => $estancia->id ?? '']) }}" method="post">
+<form action="{{ route('instancias.editCreate', ['id' => $instancia->id ?? '']) }}" method="post">
     @csrf
     @method('POST')
     <div class="form-group">
         <label for="nome">Nome *</label>
-        <input type="text" name="nome" id="nome" class="form-control" value="{{ old('nome', $estancia->nome ?? '') }}">
+        <input type="text" name="nome" id="nome" class="form-control" value="{{ old('nome', $instancia->nome ?? '') }}">
     </div>
     <div class="form-group">
         <label for="descricao">Descrição *</label>
-        <textarea name="descricao" id="descricao" class="form-control">{{ old('descricao', $estancia->descricao ?? '') }}</textarea>
+        <textarea name="descricao" id="descricao" class="form-control">{{ old('descricao', $instancia->descricao ?? '') }}</textarea>
     </div>
     <div class="form-group">
         <label for="telefone">Telefone *</label>
-        <input type="text" name="telefone" id="telefone" class="form-control" value="{{ old('telefone', $estancia->telefone ?? '') }}" @if(isset($estancia->id)) readonly @endif>
+        <input type="text" name="telefone" id="telefone" class="form-control" value="{{ old('telefone', $instancia->telefone ?? '') }}" @if(isset($instancia->id)) readonly @endif>
     </div>
     <button type="submit" class="btn btn-success mt-4">
         <i class="fas fa-save"></i> Salvar
     </button>
 </form>
 
-@if(isset($estancia) && !$estancia->vinculado)
+@if(isset($instancia) && !$instancia->vinculado)
     <div class="mt-4">
         <button id="verQrCodeBtn" class="btn btn-info" data-toggle="modal" data-target="#qrCodeModal">
             <i class="fas fa-qrcode"></i> Ver QR Code
@@ -91,12 +91,12 @@
 
         function loadQrCode() {
             $.ajax({
-            url: '{{ route('estancias.qrcode.ver', ['id' => $estancia->id ?? 0]) }}',
+            url: '{{ route('instancias.qrcode.ver', ['id' => $instancia->id ?? 0]) }}',
             method: 'GET',
             success: function(response) {
 
                 if (response.connected) {
-                    window.location.href = '{{ route('estancias.index') }}';
+                    window.location.href = '{{ route('instancias.index') }}';
                     return;
                 }
 

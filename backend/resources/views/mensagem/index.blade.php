@@ -25,12 +25,12 @@
     <div class="row">
         <div class="col-md-12">
             <div class="form-group">
-                <label for="estancia_id">Estância:</label>
-                <select name="estancia_id" id="estancia_id" class="form-control">
+                <label for="instancia_id">Estância:</label>
+                <select name="instancia_id" id="instancia_id" class="form-control">
                     <option value="" selected disabled>Selecione uma estância</option>
-                    @foreach($estancias as $estancia)
-                    <option value="{{ $estancia->id }}" {{ old('estancia_id') == $estancia->id ? 'selected' : '' }}>
-                        {{ preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1) $2-$3', $estancia->telefone) }} - {{ $estancia->descricao }}
+                    @foreach($instancias as $instancia)
+                    <option value="{{ $instancia->id }}" {{ old('instancia_id') == $instancia->id ? 'selected' : '' }}>
+                        {{ preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1) $2-$3', $instancia->telefone) }} - {{ $instancia->descricao }}
                     </option>
                     @endforeach
                 </select>

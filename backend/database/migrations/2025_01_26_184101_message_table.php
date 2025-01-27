@@ -10,14 +10,14 @@ return new class extends Migration
     {
         Schema::create('mensagens', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('estancia_id');
+            $table->unsignedBigInteger('instancia_id');
             $table->string('numero_envio');
             $table->string('numero_recebimento');
             $table->text('corpo_mensagem');
             $table->boolean('enviado');
             $table->timestamps();
 
-            $table->foreign('estancia_id')->references('id')->on('estancia')->onDelete('restrict');
+            $table->foreign('instancia_id')->references('id')->on('instancia')->onDelete('restrict');
         });
     }
 

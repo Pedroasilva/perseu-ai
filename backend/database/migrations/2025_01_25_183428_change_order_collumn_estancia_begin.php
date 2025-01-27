@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('estancia', function (Blueprint $table) {
+        Schema::table('instancia', function (Blueprint $table) {
             $table->tinyInteger('vinculado')->default(0)->change()->after('telefone');
         });
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('estancia', function (Blueprint $table) {
+        Schema::table('instancia', function (Blueprint $table) {
             $table->dropColumn('vinculado');
         });
     }

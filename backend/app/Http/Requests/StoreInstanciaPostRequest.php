@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class StoreEstanciaPostRequest extends FormRequest
+class StoreInstanciaPostRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -15,7 +15,7 @@ class StoreEstanciaPostRequest extends FormRequest
             'telefone' => [
                 'digits:11',
                 'required',
-                Rule::unique('estancia', 'telefone')
+                Rule::unique('instancia', 'telefone')
                     ->whereNull('deleted_at')
                     ->ignore($this->route('id'))
             ],

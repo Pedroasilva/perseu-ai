@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class Contatos extends Model
 {
     protected $table = 'contatos';
-    protected $fillable = ['estancia_id', 'numero', 'nome'];
+    protected $fillable = ['instancia_id', 'numero', 'nome'];
 
-    public function estancia()
+    public function instancia()
     {
-        return $this->belongsTo(Estancia::class);
+        return $this->belongsTo(Instancia::class);
     }
 
 }

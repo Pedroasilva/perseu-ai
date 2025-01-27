@@ -14,8 +14,8 @@ const doc = {
       description: ''
     },
     {
-      url: 'http://localhost:3000',
-      description: 'localhost'
+      url: 'http://172.23.0.1:3000',
+      description: '172.23.0.1'
     }
   ],
   securityDefinitions: {

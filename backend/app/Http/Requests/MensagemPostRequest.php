@@ -9,7 +9,7 @@ class MensagemPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'estancia_id' => ['required', 'exists:estancia,id'],
+            'instancia_id' => ['required', 'exists:instancia,id'],
             'destinatario' => ['required', 'digits:11'],
             'mensagem' => ['required', 'max:300'],
         ];
@@ -23,8 +23,8 @@ class MensagemPostRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'estancia_id.required' => 'O campo estância é obrigatório.',
-            'estancia_id.exists' => 'Estancia não encontrada.',
+            'instancia_id.required' => 'O campo estância é obrigatório.',
+            'instancia_id.exists' => 'Instancia não encontrada.',
             'destinatario.required' => 'O campo destinatario é obrigatório.',
             'destinatario.digits' => 'O campo destinatario deve ter 11 dígitos.',
             'mensagem.required' => 'O campo mensagem é obrigatório.',
@@ -35,7 +35,7 @@ class MensagemPostRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'estancia_id' => 'estancia_id',
+            'instancia_id' => 'instancia_id',
             'destinatario' => 'destinatario',
             'mensagem' => 'mensagem',
         ];

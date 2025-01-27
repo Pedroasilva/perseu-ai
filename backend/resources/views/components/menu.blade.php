@@ -12,7 +12,10 @@
                     <a class="nav-link active" aria-current="page" href="{{ route('home') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('estancias.index') }}">Estâncias</a>
+                    <a class="nav-link" href="{{ route('instancias.index') }}">Instâncias</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('contatos.index') }}">Contatos</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('mensagem.index') }}">Enviar Mensagem</a>

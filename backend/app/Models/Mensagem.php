@@ -9,7 +9,7 @@ class Mensagem extends Model
     protected $table = 'mensagens';
 
     protected $fillable = [
-        'estancia_id',
+        'instancia_id',
         'numero_envio',
         'numero_recebimento',
         'corpo_mensagem',
@@ -20,9 +20,9 @@ class Mensagem extends Model
         'enviado' => 'boolean'
     ];
 
-    public function estancia()
+    public function instancia()
     {
-        return $this->belongsTo(Estancia::class);
+        return $this->belongsTo(Instancia::class);
     }
 
     public function mensagem()

@@ -37,12 +37,27 @@ class WhatsappApiService
 
     public function sendMessage($sessionId, $to, $message)
     {
-        $to = substr_replace($to, '', 2, 1);
-
         return $this->client->post('/client/sendMessage/'.$sessionId, [
             'contentType' => 'string',
-            'chatId' => '55'.$to.'@c.us',
+            'chatId' => $this->formatWhatsappId($to),
             'content' => $message
         ]);
+    }
+
+    public function getContactInfo($sessionId, $contactNumber)
+    {
+        return $this->client->post('/contact/getClassInfo/'.$sessionId, [
+            'contactId' => $this->formatWhatsappId($contactNumber)
+        ]);
+    }
+
+    private function formatWhatsappId(string $number): string
+    {
+        return "55{$this->formatPhoneNumber($number)}@c.us";
+    }
+
+    private function formatPhoneNumber(string $number): string
+    {
+        return substr_replace($number, '', 2, 1);
     }
 }

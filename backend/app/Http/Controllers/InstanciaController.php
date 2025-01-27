@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Enums\WhatsappApiEnum;
-use App\Http\Requests\StoreEstanciaPostRequest;
-use App\Models\Estancia;
+use App\Http\Requests\StoreInstanciaPostRequest;
+use App\Models\Instancia;
 use App\Services\WhatsappApiService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class EstanciaController extends Controller
+class InstanciaController extends Controller
 {
     private WhatsappApiService $whatsAppApiService;
 
@@ -19,40 +19,40 @@ class EstanciaController extends Controller
     }
 
     /**
-     * Display a listing of the Estancias.
+     * Display a listing of the Instancias.
      *
      * @return View
      */
     public function index(): View
     {
-        $estancias = Estancia::all();
-        return view('estancias.index', compact('estancias'));
+        $instancias = Instancia::all();
+        return view('instancias.index', compact('instancias'));
     }
 
     /**
-     * Display a single Estancia or initiate a session if necessary.
+     * Display a single Instancia or initiate a session if necessary.
      *
      * @return View
      */
     public function show(): View
     {
         $id = request()->route('id');
-        $estancia = Estancia::find($id);
+        $instancia = Instancia::find($id);
 
-        if (!$estancia) {
-            return view('estancias.item', compact('estancia'));
+        if (!$instancia) {
+            return view('instancias.item', compact('instancia'));
         }
 
-        $status = $this->whatsAppApiService->checkSession($estancia->telefone);
+        $status = $this->whatsAppApiService->checkSession($instancia->telefone);
 
         if ($status['success']) {
-            $estancia->vinculado = true;
-            $estancia->save();
+            $instancia->vinculado = true;
+            $instancia->save();
         }
 
-        $this->handleSession($status, $estancia->telefone);
+        $this->handleSession($status, $instancia->telefone);
 
-        return view('estancias.item', compact('estancia'));
+        return view('instancias.item', compact('instancia'));
     }
 
     /**
@@ -74,9 +74,9 @@ class EstanciaController extends Controller
     public function showQrCode(): ?array
     {
         $id = request()->route('id');
-        $estancia = Estancia::findOrFail($id);
+        $instancia = Instancia::findOrFail($id);
 
-        $status = $this->whatsAppApiService->checkSession($estancia->telefone);
+        $status = $this->whatsAppApiService->checkSession($instancia->telefone);
 
         if ($status['message'] == WhatsappApiEnum::SESSAO_CONECTADA->value) {
             $response = [
@@ -85,58 +85,58 @@ class EstanciaController extends Controller
             return $response;
         }
 
-        return $this->whatsAppApiService->getQrCode($estancia->telefone);
+        return $this->whatsAppApiService->getQrCode($instancia->telefone);
     }
 
     /**
-     * Create or update an Estancia.
+     * Create or update an Instancia.
      *
-     * @param StoreEstanciaPostRequest $request
+     * @param StoreInstanciaPostRequest $request
      * @return RedirectResponse
      */
-    public function editCreate(StoreEstanciaPostRequest $request): RedirectResponse
+    public function editCreate(StoreInstanciaPostRequest $request): RedirectResponse
     {
         $id = request()->route('id');
         $data = $request->validated();
 
         if ($id) {
-            $estancia = Estancia::findOrFail($id);
-            $estancia->update($data);
+            $instancia = Instancia::findOrFail($id);
+            $instancia->update($data);
         } else {
-            $this->createOrUpdateEstancia($data);
+            $this->createOrUpdateInstancia($data);
         }
 
-        return redirect()->route('estancias.index');
+        return redirect()->route('instancias.index');
     }
 
     /**
-     * Create or update an Estancia showQrCodebased on the provided data.
+     * Create or update an Instancia showQrCodebased on the provided data.
      *
      * @param array $data
      * @return void
      */
-    private function createOrUpdateEstancia(array $data): void
+    private function createOrUpdateInstancia(array $data): void
     {
-        $estancia = Estancia::onlyTrashed()->where('telefone', $data['telefone'])->first();
+        $instancia = Instancia::onlyTrashed()->where('telefone', $data['telefone'])->first();
 
-        if ($estancia) {
-            $estancia->restore();
+        if ($instancia) {
+            $instancia->restore();
         } else {
-            Estancia::create($data);
+            Instancia::create($data);
         }
     }
 
     /**
-     * Delete an Estancia.
+     * Delete an Instancia.
      *
      * @return RedirectResponse
      */
     public function delete(): RedirectResponse
     {
         $id = request()->route('id');
-        $estancia = Estancia::findOrFail($id);
-        $estancia->delete();
+        $instancia = Instancia::findOrFail($id);
+        $instancia->delete();
 
-        return redirect()->route('estancias.index');
+        return redirect()->route('instancias.index');
     }
 }
